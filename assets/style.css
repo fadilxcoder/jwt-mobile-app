@@ -1,0 +1,49 @@
+/* fadilxcoder */
+
+@font-face {
+    font-family: OpenSans;
+    src: url(fonts/OpenSans-Regular.ttf);
+  }
+
+body{
+    margin:0;
+    font-family: OpenSans;
+    position: relative;
+    background: url(back.jpg);
+    background-size: cover;
+}
+.formWrapper{
+    width: 400px;
+    padding: 50px;
+    background: white;
+    margin: 10% auto 0;
+}
+.field-wrapper input{
+    width: 375px;
+    padding: 10px;
+    outline: none;
+    border: 1px solid #2840c5;
+}
+.field-wrapper{
+    margin-bottom: 10px;
+}
+#submit-btn{
+    width: 100%;
+    background: #2840c5;
+    border: none;
+    color: #FFF;
+    outline: none;
+    padding: 10px;
+    font-family: OpenSans;
+}
+.field-wrapper label.error{
+    color: red !important;
+    font-size: 12px !important;
+    clear: both !important;
+}
+.alert-success{
+    color: green !important;
+}
+.alert-danger{
+    color: red !important;
+}
