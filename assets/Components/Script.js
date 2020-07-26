@@ -1,6 +1,6 @@
 function initConsole()
 {
-    console.log('DEV...');
+    console.log('Script.js');
 }
 
 export {

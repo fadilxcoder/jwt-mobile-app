@@ -47,3 +47,48 @@ body{
 .alert-danger{
     color: red !important;
 }
+
+/* CSS Loader */
+.loader {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    top: 25px;
+}
+  
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* EOF CSS Loader */
+
+#api{
+    height: 200px;
+    width: 400px;
+    padding: 50px;
+    background: #7c95bb;
+    margin: 0 auto;
+    position: relative;
+}
+#api #api-response{
+    height: 100%;
+}
+
+#api-response p{
+    overflow-wrap: break-word;
+    line-height: 2;
+}

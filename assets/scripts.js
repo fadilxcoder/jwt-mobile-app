@@ -3,11 +3,13 @@
  */
 
 import * as MyScript from './Components/Script.js';
-import Account from "./Components/Account.js";
+import Main from "./Components/Main.js";
 
 
 $(document).ready( function() {
 
 	MyScript.initConsole();
-	var account = new Account();
+
+	var main = new Main();
+	main.console();
 });
