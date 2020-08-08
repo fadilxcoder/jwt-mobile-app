@@ -1,3 +1,5 @@
+import Cookie from '../plugins/cookie.js';
+
 class Main
 {
     target = $('#api');
@@ -14,7 +16,9 @@ class Main
     successFunction(data, textStatus, jqXHR) {
         this.target.find('.loader').remove();
         $('#submit-btn').attr('disabled', false);
-        this.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>')
+        this.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
+        // Cookie.set('jwt-value', data.Token);
+        // console.log(Cookie.get('jwt-value'));
     }
 
     failedFunction(jqXHR, textStatus, errorThrown) {
@@ -35,14 +39,10 @@ class Main
                 alert('Empty field !');
                 return;
             }
-            
-            var jsonData = JSON.stringify({
-                var : $input,
-            })
 
             $.ajax({
-                // url			: 'https://e79525ad0831.ngrok.io/get-token',
-                url			: 'https://e79525ad0831.ngrok.io/verify-token',
+                // url			: 'http://localhost/ci-jwt-api/get-token',
+                url			: 'http://localhost/ci-jwt-api/verify-token',
                 type		: 'GET',
                 cache       : false,
                 data		: {
@@ -52,9 +52,11 @@ class Main
                 beforeSend	: function(){
                     $('#submit-btn').attr('disabled', true);
                     thisObj.target.prepend('<div class="loader"></div>');
+                    console.log(Cookie.get('jwt-value'));
                 },
                 headers     : {
-                    'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXYiOiJmYWRpbEB4Y29kZXIuZHZscHIiLCJ0aW1lU3RhbXAiOiIyMDIwLTA3LTI2IDA3OjQ2OjU3In0.tsM-9CUohkELEvq3fpH3eiEu683du3uVW6cQ9-iH6a8',
+                    'Authorization':'Bearer ' + Cookie.get('jwt-value'),
+                    // 'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXYiOiJmYWRpbEB4Y29kZXIuZHZscHIiLCJ0aW1lU3RhbXAiOiIyMDIwLTA4LTA4IDA4OjM3OjIyIn0.QPbn6jqiXghRdmwtBtxyX_f5nx71dtGS42xMCjz68b8',
                 },
                 
             })
