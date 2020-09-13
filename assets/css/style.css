@@ -2,24 +2,23 @@
 
 @font-face {
     font-family: OpenSans;
-    src: url(fonts/OpenSans-Regular.ttf);
+    src: url(../fonts/OpenSans-Regular.ttf);
   }
 
 body{
     margin:0;
     font-family: OpenSans;
     position: relative;
-    background: url(back.jpg);
+    background: url(../images/back.jpg);
     background-size: cover;
 }
 .formWrapper{
-    width: 400px;
-    padding: 50px;
-    background: white;
-    margin: 10% auto 0;
+    margin-top: 25px;
+    height: 70px;
+    position: relative;
 }
 .field-wrapper input{
-    width: 375px;
+    width: calc(100% - 20px);
     padding: 10px;
     outline: none;
     border: 1px solid #2840c5;
@@ -77,12 +76,10 @@ body{
 /* EOF CSS Loader */
 
 #api{
-    height: 200px;
-    width: 400px;
-    padding: 50px;
-    background: #7c95bb;
+    padding: 10px;
     margin: 0 auto;
     position: relative;
+    top: 70px;
 }
 #api #api-response{
     height: 100%;
@@ -101,7 +98,7 @@ ul#action-list{
 }
 
 ul#action-list li{
-    display: inline-block;
+    display: inline-flex;
     list-style: none;
     margin: 0px 10px;
 }
@@ -111,4 +108,13 @@ ul#action-list li a{
     color: white;
     background-color: #2840c5;
     padding: 10px;
+}
+
+main{
+    width: 700px;
+    margin: 0 auto;
+    padding: 15px;
+    height: 500px;
+    background: white;
+    margin-top: 25px;
 }

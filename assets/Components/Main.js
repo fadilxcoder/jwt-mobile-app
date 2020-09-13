@@ -2,9 +2,11 @@ import Cookie from '../plugins/cookie.js';
 
 class Main
 {
-    url = 'https://gfx-jwt-api.herokuapp.com/';
+    // url = 'https://gfx-jwt-api.herokuapp.com/';
+    url = 'https://446f3b7c17e6.ngrok.io/';
     // Routes
     routes = {
+        'BASE' : 'index',
         'GET_TOKEN' : 'get-token',
         'VERIFY_TOKEN' : 'verify-token',
     };
@@ -14,6 +16,7 @@ class Main
     input = $('#data');
 
     constructor(){
+        this.init();
         // this._sendTextToServer();
         this.getToken();
         this.verifyToken();
@@ -21,6 +24,34 @@ class Main
 
     console() {
         console.log('Main.js');
+    }
+
+    init() {
+        var thisObj = this;
+        var $url = thisObj._authorizationRequestRoute();
+
+            $.ajax({
+                url			: $url,
+                type		: 'POST',
+                cache       : false,
+                data		: {
+                    'PUBLIC_KEY' : localStorage.getItem('PUBLIC_KEY'),
+                },
+                dataType	: 'json',
+                beforeSend	: function(){
+                    thisObj.target.prepend('<div class="loader"></div>');
+                }
+            })
+            .done( function (data, textStatus, jqXHR) { 
+                thisObj.target.find('.loader').remove();
+                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
+                Cookie.set('AUTHORIZATION_GRANT', data.AUTHORIZATION_GRANT);
+            })
+            .fail( function (jqXHR, textStatus, errorThrown) { 
+                thisObj.target.find('.loader').remove();
+                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
+            })
+            ;
     }
 
     // Getting Token from API
@@ -36,7 +67,7 @@ class Main
                 type		: 'GET',
                 cache       : false,
                 data		: {
-                    var : Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), // Generate a random string in JavaScript In a short and fast way!
+                    var : $('#input-value').val(),
                 },
                 dataType	: 'json',
                 beforeSend	: function(){
@@ -105,52 +136,6 @@ class Main
 
     // PRIVATE Methods
 
-    _sendTextToServer() {
-        var thisObj = this;
-
-        $('#submit-btn').on( 'click', function(f) {
-            f.preventDefault();
-
-            var $input = thisObj.input.val();
-
-            if ($input == '') {
-                alert('Empty field !');
-                return;
-            }
-
-            $.ajax({
-                // url			: 'http://localhost/ci-jwt-api/get-token',
-                // url			: 'http://localhost/ci-jwt-api/verify-token',
-                type		: 'GET',
-                cache       : false,
-                data		: {
-                    var : $input,
-                },
-                dataType	: 'json',
-                beforeSend	: function(){
-                    $('#submit-btn').attr('disabled', true);
-                    thisObj.target.prepend('<div class="loader"></div>');
-                    console.log(Cookie.get('jwt-value'));
-                },
-                headers     : {
-                    'Authorization':'Bearer ' + Cookie.get('jwt-value'),
-                    // 'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXYiOiJmYWRpbEB4Y29kZXIuZHZscHIiLCJ0aW1lU3RhbXAiOiIyMDIwLTA4LTA4IDA4OjM3OjIyIn0.QPbn6jqiXghRdmwtBtxyX_f5nx71dtGS42xMCjz68b8',
-                },
-                
-            })
-            .done( function (data, textStatus, jqXHR) { 
-                thisObj.successFunction(data, textStatus, jqXHR);
-            })
-            .fail( function (jqXHR, textStatus, errorThrown) { 
-                thisObj.failedFunction(jqXHR, textStatus, errorThrown);
-            })
-            .always( function(reponse, textStatus, jqXHR) {
-                console.log('always!');
-            })
-            ;
-        });
-    }
-
     /* ROUTE MATCHER */
     _route(Obj) {
         var thisObj = this;
@@ -164,6 +149,13 @@ class Main
         var $route = thisObj.url + thisObj.routes[$key];
         return $route; 
     }
+
+    _authorizationRequestRoute() {
+        var thisObj = this;
+        var $route = thisObj.url + thisObj.routes['BASE'];
+        return $route; 
+    }
+
 }
 
 export default Main;
