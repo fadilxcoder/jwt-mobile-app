@@ -3,7 +3,7 @@ import Cookie from '../plugins/cookie.js';
 class Main
 {
     // url = 'https://gfx-jwt-api.herokuapp.com/';
-    url = 'https://446f3b7c17e6.ngrok.io/';
+    url = encodeURI('http://localhost/ci-jwt-api/');
     // Routes
     routes = {
         'BASE' : 'index',
@@ -18,6 +18,7 @@ class Main
     constructor(){
         this.init();
         // this._sendTextToServer();
+        this.verifyKey();
         this.getToken();
         this.verifyToken();
     }
@@ -30,28 +31,37 @@ class Main
         var thisObj = this;
         var $url = thisObj._authorizationRequestRoute();
 
-            $.ajax({
-                url			: $url,
-                type		: 'POST',
-                cache       : false,
-                data		: {
-                    'PUBLIC_KEY' : localStorage.getItem('PUBLIC_KEY'),
-                },
-                dataType	: 'json',
-                beforeSend	: function(){
-                    thisObj.target.prepend('<div class="loader"></div>');
-                }
-            })
-            .done( function (data, textStatus, jqXHR) { 
-                thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
-                Cookie.set('AUTHORIZATION_GRANT', data.AUTHORIZATION_GRANT);
-            })
-            .fail( function (jqXHR, textStatus, errorThrown) { 
-                thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
-            })
-            ;
+        $.ajax({
+            url			: $url,
+            type		: 'POST',
+            cache       : false,
+            data		: {
+                'PUBLIC_KEY' : localStorage.getItem('PUBLIC_KEY'),
+            },
+            dataType	: 'json',
+            beforeSend	: function(){
+                thisObj.target.prepend('<div class="loader"></div>');
+            }
+        })
+        .done( function (data, textStatus, jqXHR) { 
+            thisObj.target.find('.loader').remove();
+            thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
+            Cookie.set('AUTHORIZATION_GRANT', data.AUTHORIZATION_GRANT);
+        })
+        .fail( function (jqXHR, textStatus, errorThrown) { 
+            thisObj.target.find('.loader').remove();
+            thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
+        })
+        ;
+    }
+
+    verifyKey() {
+        var thisObj = this;
+
+        $(document).on('click', '#VERIFY_KEY', function(e){
+            e.preventDefault();
+            thisObj.init();
+        });
     }
 
     // Getting Token from API
@@ -64,10 +74,11 @@ class Main
 
             $.ajax({
                 url			: $url,
-                type		: 'GET',
+                type		: 'POST',
                 cache       : false,
                 data		: {
                     var : $('#input-value').val(),
+                    AUTHORIZATION_GRANT : Cookie.get('AUTHORIZATION_GRANT'),
                 },
                 dataType	: 'json',
                 beforeSend	: function(){
@@ -97,9 +108,12 @@ class Main
 
             $.ajax({
                 url			: $url,
-                type		: 'GET',
+                type		: 'POST',
                 cache       : false,
                 dataType	: 'json',
+                data		: {
+                    AUTHORIZATION_GRANT : Cookie.get('AUTHORIZATION_GRANT'),
+                },
                 beforeSend	: function(){
                     thisObj.target.prepend('<div class="loader"></div>');
                 },
@@ -153,7 +167,7 @@ class Main
     _authorizationRequestRoute() {
         var thisObj = this;
         var $route = thisObj.url + thisObj.routes['BASE'];
-        return $route; 
+        return $route;
     }
 
 }
