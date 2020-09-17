@@ -1,1 +1,3 @@
 - Using javascript class (import / export)
+- Verify Cerfificate to check if CLIENT is VALID
+- If CLIENT is VALID, enable JWT process
