@@ -17,11 +17,13 @@ $(document).ready( function() {
 
 function init()
 {
-	var filename = 'assets/keys/public.pub';
+	var filename = 'assets/keys/public.pem';
+	// var filename = 'assets/keys/public.pem.old';
 
     fetch(filename)
     .then((resp) => resp.text())
     .then(function(data) {
+		console.log(data);
 		localStorage.setItem('PUBLIC_KEY', data);
 
 		// JS Class

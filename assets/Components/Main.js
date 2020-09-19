@@ -2,8 +2,9 @@ import Cookie from '../plugins/cookie.js';
 
 class Main
 {
-    // url = 'https://gfx-jwt-api.herokuapp.com/';
-    url = encodeURI('http://localhost/ci-jwt-api/');
+    url = 'http://localhost/ci-jwt-api/';
+    url = 'https://gfx-jwt-api.herokuapp.com/';
+    
     // Routes
     routes = {
         'BASE' : 'index',
