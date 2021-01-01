@@ -1,0 +1,109 @@
+
+<!--
+    +------------------------------------------+
+    ¦              FADILXCODER                 ¦
+    ¦------------------------------------------¦
+    ¦        facebook.com/fadil.xcoder         ¦
+    +------------------------------------------+
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>JQuery Mobile - RSS</title>
+        <meta name="author" content="fadilxcoder" />
+        <meta name="copyright" content="fadilxcoder" />
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    	<link rel="stylesheet" href="./assets/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="./assets/jquery.mobile-style.css">
+    	<script src="./assets/jquery.mobile-1.12.4-jquery.min.js"></script>
+        <script src="./assets/jquery.mobile-1.4.5.min.js"></script>
+    </head>
+    <body>
+        <div data-role="page" id="home-page" data-theme="a">
+            <header data-role="header" role="banner">
+                <picture>
+                    <img src="./assets/images/jquery-logo.png" alt="Logo JQM" />
+                </picture>
+                <h1>RSS FEED</h1>
+                <h6>DETAILS</h6>
+                <picture>
+                    <img src="./assets/images/image.gif" alt="Banner Image" />
+                </picture>
+            </header>
+            <div data-role="content">
+                <ul data-role="listview" data-inset="true" id="ListContainer"></ul>
+            </div>
+            <footer data-role="footer" data-position="fixed">
+        		<div data-role="navbar">
+        			<ul>
+                        <li><a href="#" data-rel="back" data-icon="ui-btn ui-icon-back"></a></li>
+                        <li><a href="index.html" data-transition="flow" data-ajax="false" data-icon="ui-btn ui-icon-home"></a></li>
+                        <li><a href="show-details.html" data-transition="flip" data-ajax="false" data-icon="ui-btn ui-icon-bullets"></a></li>
+        				<li><a href="contact-us.html" data-transition="slideup" data-ajax="false" data-icon="ui-btn ui-icon-comment"></a></li>
+        			</ul>
+        		</div>
+	        </footer>
+        </div>
+        <div data-role="page" id="popup">
+            <div data-role="header" class="ui-top-title" data-theme="a">
+                <h1></h1>
+            </div>
+            <div role="main" class="ui-content">
+                <h2></h2>
+                <h3></h3>
+                <h4></h4>
+                <p></p>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){ 
+                $.ajax({
+                    dataType : 'json',
+                    url      : 'https://iox.000webhostapp.com/db.php',
+                    cache    : true,
+                    type     : 'GET',
+                    success  : function (data){
+                        delete data['log'];
+                        delete data['msg'];
+						localStorage.setItem("dbData", JSON.stringify(data));
+						showData(data);
+						console.log('200 OK');
+                    },
+                    error   : function(e){
+                        var data = JSON.parse(localStorage.getItem("dbData"));
+                        showData(data);
+                        console.log(e.statusText + ':'+ e.status);
+            		},
+                    fail    : function (){ 
+                    	console.log("Request Fail");
+                    }
+                });
+                $(document).on('click', 'li.click-to-pop-up', function(){   
+                    var _id         = $(this).children('a').attr('data-_id');
+                    var _name       = $(this).children('a').attr('data-_name');
+                    var _subject    = $(this).children('a').attr('data-_subject');
+                    var _message    = $(this).children('a').attr('data-_message');
+                    var _email      = $(this).children('a').attr('data-_email');
+                    $('#popup div.ui-top-title h1').text('# '+_id);
+                    $('#popup div.ui-content h2').text(_subject);
+                    $('#popup div.ui-content h3').text(_name);
+                    $('#popup div.ui-content h4').text(_email);
+                    $('#popup div.ui-content p').text(_message);
+                });
+                // function Show Data
+                function showData(data){
+                    var table = '';
+                    $.each(data, function (idx, obj )
+                    {                              
+                        table += ('<li class="click-to-pop-up"><a href="#popup" data-rel="dialog" data-transition="flip" data-_id="'+ data[idx]._id+'" data-_name="'+ data[idx]._name+'" data-_subject="'+ data[idx]._subject+'" data-_message="'+ data[idx]._message+'" data-_email="'+ data[idx]._email+'" >' + data[idx]._subject + '</a></li>');
+                    });
+                    $("#ListContainer").append(table);
+                    $("#ListContainer li").addClass('ui-first-child ui-last-child');
+                    $("#ListContainer li a").addClass('ui-btn ui-btn-icon-right ui-icon-carat-r');
+                }
+            });
+        </script>
+    </body>
+</html>

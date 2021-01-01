@@ -1,0 +1,139 @@
+
+<!--
+    +------------------------------------------+
+    ¦              FADILXCODER                 ¦
+    ¦------------------------------------------¦
+    ¦        facebook.com/fadil.xcoder         ¦
+    +------------------------------------------+
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>JQuery Mobile - RSS</title>
+        <meta name="author" content="fadilxcoder" />
+        <meta name="copyright" content="fadilxcoder" />
+    	<meta charset="utf-8">
+		<!--<meta http-equiv="Content-Security-Policy" content="default-src *;  'img-src'; style-src *  'unsafe-inline'; script-src *  'unsafe-inline'; media-src *">-->
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    	<link rel="stylesheet" href="./assets/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" href="./assets/jquery.mobile-style.css">
+    	<script src="./assets/jquery.mobile-1.12.4-jquery.min.js"></script>
+        <script src="./assets/jquery.mobile-1.4.5.min.js"></script>
+        <script src="./assets/jquery-validation.js"></script>
+        <style>.div-error, textarea#message.error{box-shadow: 0 0 12px #FF0000 !important;}</style>
+    </head>
+    <body>
+        <div data-role="page" id="contact-us-page" data-theme="a">
+            <header data-role="header" role="banner">
+                <picture>
+                    <img src="./assets/images/jquery-logo.png" alt="Logo JQM" />
+                </picture>
+                <h1>RSS FEED</h1>
+                <h6>CONTACT US</h6>
+                <picture>
+                    <img src="./assets/images/image.gif" alt="Banner Image" />
+                </picture>
+            </header>
+            <div data-role="content">
+                <div id="success-dev" class="ui-bar ui-bar-a ui-corner-all" style="display: none;">
+                    <p>Thank you. Ticket number : <span id="ref-code"></span></p>
+                </div>
+                <form id="form-wrapper" method="post">
+                    <ul data-role="listview" data-inset="true">
+                        <li class="ui-field-contain">
+                            <label for="name">Name :</label>
+                            <input type="text" name="name" id="name" data-clear-btn="true" required>
+                        </li>
+                        <li class="ui-field-contain">
+                            <label for="email">Email :</label>
+                            <input type="email" name="email" id="email" data-clear-btn="true" required>
+                        </li>
+                        <li class="ui-field-contain">
+                            <label for="subject">Subject :</label>
+                            <input type="text" name="subject" id="subject" data-clear-btn="true" required>
+                        </li>
+                        <li class="ui-field-contain">
+                            <label for="message">Message :</label>
+                            <textarea cols="40" rows="60" name="message" id="message" required></textarea>
+                        </li>
+                        <li class="ui-field-contain">
+                            <input type="submit" id="submitContact" value="Send" name="submitContact">
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <footer data-role="footer" data-position="fixed">
+        		<div data-role="navbar">
+        			<ul>
+                        <li><a href="#" data-rel="back" data-icon="ui-btn ui-icon-back"></a></li>
+                        <li><a href="index.html" data-transition="flow" data-ajax="false" data-icon="ui-btn ui-icon-home"></a></li>
+                        <li><a href="show-details.html" data-transition="flip" data-ajax="false" data-icon="ui-btn ui-icon-bullets"></a></li>
+        				<li><a href="contact-us.html" data-transition="slideup" data-ajax="false" data-icon="ui-btn ui-icon-comment"></a></li>
+        			</ul>
+        		</div>
+	        </footer>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#submitContact").click(function(e){
+                    $("#form-wrapper").validate({
+                        rules:{
+                            name:       "required",
+                            subject:    "required",
+                            message:    "required",
+                            email: {
+                                required : true,
+                                email : true
+                            }
+                        },
+                        errorPlacement: function (error, element) {
+                            //console.log(error);
+                            console.log(element);
+                            $(element).parent('div').addClass('div-error');
+                        },
+                        submitHandler: function(e){
+
+                            var name            = $('#name').val();
+                            var email           = $('#email').val();
+                            var subject         = $('#subject').val();
+                            var message         = $('#message').val();
+                            var btnName         = $('#submitContact').attr('name');
+                            $.ajax({
+                                url      : 'https://iox.000webhostapp.com/db.php',
+                                type     : 'POST',
+                                cache    : false,
+                                data     :  { 
+                                                name: name, 
+                                                email: email,
+                                                subject: subject,
+                                                message: message,
+                                                btnName: btnName
+                                            },
+                                success  : function (information){
+                                    var information = JSON.parse(information);
+                                    if(information.log === true){
+                                        $('#success-dev').show();
+                                        $('#form-wrapper').hide().fadeOut();
+                                        $('#ref-code').append('#'+information.msg);
+                                    }else{
+                                        $('#success-dev').show();
+                                        $('#form-wrapper').hide().fadeOut();
+                                        $('#ref-code').parent("p").html('ERROR : '+information.msg);
+                                    }
+                                },
+                                error   : function(e){
+                                    console.log(e.statusText + ':'+ e.status);
+                                },
+                                fail    : function (){ 
+                                    console.log("Request Fail");
+                                }
+                            });
+                        }
+                    });
+                });
+                $("textarea#message").css('min-height','100px');
+            });
+        </script>
+    </body>
+</html>

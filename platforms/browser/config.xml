@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.phonegap.rssfeed" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>RSS FEED</name>
+    <description>
+        Working with JQuery Mobile
+    </description>
+    <author email="fadil@xcoder.developer" href="https://www.facebook.com/fadil.xcoder">
+        fadilxcoder
+    </author>
+    <icon src="icon.png" />
+    <splash src="splash.png" />
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="orientation" value="portrait" />
+    <preference name="fullscreen" value="false" />
+    <preference name="SplashScreenDelay" value="1000" />
+    <preference name="KeepRunning" value="false" />
+    <preference name="SplashScreen" value="splash" />
+</widget>
