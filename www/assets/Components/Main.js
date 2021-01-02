@@ -22,7 +22,6 @@ class Main
         this.verifyKey();
         this.getToken();
         this.verifyToken();
-        this.debugging();
     }
 
     init() {
@@ -51,10 +50,6 @@ class Main
             thisObj.target.find('#api-response').html('<code>' + JSON.stringify(errorThrown) + '</code>');
         })
         ;
-    }
-
-    debugging() {
-        // Cookies.set('foo', 'bar');
     }
 
     verifyKey() {
