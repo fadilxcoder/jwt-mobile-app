@@ -1,4 +1,5 @@
-import Cookie from '../plugins/cookie.js';
+
+import Cookies from 'js-cookie';
 
 class Main
 {
@@ -18,14 +19,10 @@ class Main
 
     constructor(){
         this.init();
-        // this._sendTextToServer();
         this.verifyKey();
         this.getToken();
         this.verifyToken();
-    }
-
-    console() {
-        console.log('Main.js');
+        this.debugging();
     }
 
     init() {
@@ -46,14 +43,18 @@ class Main
         })
         .done( function (data, textStatus, jqXHR) { 
             thisObj.target.find('.loader').remove();
-            thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
-            Cookie.set('AUTHORIZATION_GRANT', data.AUTHORIZATION_GRANT);
+            thisObj.target.find('#api-response').html('<code>' + JSON.stringify(data) + '</code>');
+            Cookies.set('AUTHORIZATION_GRANT', data.AUTHORIZATION_GRANT);
         })
         .fail( function (jqXHR, textStatus, errorThrown) { 
             thisObj.target.find('.loader').remove();
-            thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
+            thisObj.target.find('#api-response').html('<code>' + JSON.stringify(errorThrown) + '</code>');
         })
         ;
+    }
+
+    debugging() {
+        // Cookies.set('foo', 'bar');
     }
 
     verifyKey() {
@@ -79,7 +80,7 @@ class Main
                 cache       : false,
                 data		: {
                     var : $('#input-value').val(),
-                    AUTHORIZATION_GRANT : Cookie.get('AUTHORIZATION_GRANT'),
+                    AUTHORIZATION_GRANT : Cookies.get('AUTHORIZATION_GRANT'),
                 },
                 dataType	: 'json',
                 beforeSend	: function(){
@@ -88,12 +89,12 @@ class Main
             })
             .done( function (data, textStatus, jqXHR) { 
                 thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
-                Cookie.set('jwt-value', data.Token);
+                thisObj.target.find('#api-response').html('<code>' + JSON.stringify(data) + '</code>');
+                Cookies.set('jwt-value', data.Token);
             })
             .fail( function (jqXHR, textStatus, errorThrown) { 
                 thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
+                thisObj.target.find('#api-response').html('<code>' + JSON.stringify(errorThrown) + '</code>');
             })
             ;
         });
@@ -113,43 +114,27 @@ class Main
                 cache       : false,
                 dataType	: 'json',
                 data		: {
-                    AUTHORIZATION_GRANT : Cookie.get('AUTHORIZATION_GRANT'),
+                    AUTHORIZATION_GRANT : Cookies.get('AUTHORIZATION_GRANT'),
                 },
                 beforeSend	: function(){
                     thisObj.target.prepend('<div class="loader"></div>');
                 },
                 headers     : {
-                    'Authorization':'Bearer ' + Cookie.get('jwt-value'),
+                    'Authorization':'Bearer ' + Cookies.get('jwt-value'),
                 },
                 
             })
             .done( function (data, textStatus, jqXHR) { 
                 thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
+                thisObj.target.find('#api-response').html('<code>' + JSON.stringify(data) + '</code>');
             })
             .fail( function (jqXHR, textStatus, errorThrown) { 
                 thisObj.target.find('.loader').remove();
-                thisObj.target.find('#api-response').html('<p>' + JSON.stringify(errorThrown) + '</p>');
+                thisObj.target.find('#api-response').html('<code>' + JSON.stringify(errorThrown) + '</code>');
             })
             ;
         });
     }
-
-    successFunction(data, textStatus, jqXHR) {
-        // this.target.find('.loader').remove();
-        // $('#submit-btn').attr('disabled', false);
-        // this.target.find('#api-response').html('<p>' + JSON.stringify(data) + '</p>');
-        // Cookie.set('jwt-value', data.Token);
-        // console.log(Cookie.get('jwt-value'));
-    }
-
-    failedFunction(jqXHR, textStatus, errorThrown) {
-        // // console.log(errorThrown);
-        // console.log(textStatus);
-        // console.log(jqXHR);
-    }
-
-    // PRIVATE Methods
 
     /* ROUTE MATCHER */
     _route(Obj) {
