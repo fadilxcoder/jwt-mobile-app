@@ -5,3 +5,4 @@
 # Resources
 
 - https://github.com/js-cookie/js-cookie (JavaScript API for handling browser cookies)
+- https://gist.github.com/fadilxcoder/d7106c55f60df00bf5a0088777911fd5 (Pem certificate)
