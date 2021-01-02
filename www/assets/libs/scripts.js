@@ -14,7 +14,8 @@ $(document).ready( function() {
 
 function init()
 {
-	var filename = '../keys/public.pem';
+	// var filename = 'https://fadilxcoder.github.io/jwt-mobile-app/assets/keys/public.pem';
+	var filename = 'https://gist.githubusercontent.com/fadilxcoder/d7106c55f60df00bf5a0088777911fd5/raw/a0a94c08fee2b848b2714aa5e8741ec819edfc46/jwt.pem';
 
     fetch(filename)
     .then((resp) => resp.text())
