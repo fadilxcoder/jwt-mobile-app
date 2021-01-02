@@ -14,7 +14,8 @@ $(document).ready( function() {
 
 function init()
 {
-	var filename = './assets/keys/public.pem';
+	var path = window.location.href;
+	var filename = path + '/assets/keys/public.pem';
 
     fetch(filename)
     .then((resp) => resp.text())
