@@ -1,6 +1,6 @@
-- Using javascript class (import / export)
-- Verify Cerfificate to check if CLIENT is VALID
+- Verify Certificate to check if CLIENT is VALID
 - If CLIENT is VALID, enable JWT process
+- SERVER repo : https://github.com/fadilxcoder/ci-jwt.git
 
 # Resources
 
